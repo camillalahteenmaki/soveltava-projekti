@@ -3,13 +3,16 @@ const express = require("express");
 const {createHash} = require("crypto");
 const app = express();
 const User = require('./user');
+const Clarifai = require("clarifai");
 const port = process.env.PORT || 8000;
 require('dotenv').config();
-
 
 app.use(require("body-parser").urlencoded({ extended: false }));
 app.use(require("body-parser").json({limit: "50mb"}));
 app.use(express.static(__dirname + "/build"));
+const clarifaiApp = new Clarifai.App({
+    apiKey: `${process.env.APIKEY}`
+})
 
 mongoose.connect(
     process.env.DBURI, {
@@ -54,7 +57,11 @@ app.post("/register", async(req, res) => {
     }
 })
 
-//app.post("/imageurl")
+app.post("/imageurl", (req, res) => {
+    clarifaiApp.models.predict('f76196b43bbd45c99b4f3cd8e8b40a8a', req.body.input)
+    .then((data) => res.json(data))
+    .catch(err => res.status(500).json(err));
+})
 
 app.listen(port, () => {
     console.log(`App running in port ${port}`);
