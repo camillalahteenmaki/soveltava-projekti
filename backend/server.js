@@ -32,7 +32,7 @@ app.post("/login", async(req, res) => {
         const user = await User.findOne({username: username});
         if(user){
             if(user.password == digest){
-                return res.status(200).json(user.id);
+                return res.status(200).json(user);
             }
         }
         return res.status(400).json("Login failed");
@@ -51,16 +51,15 @@ app.post("/register", async(req, res) => {
         const digest = hash.update(password).digest('hex');
         const newUser = new User({username, password: digest});
         await newUser.save();
-        return res.status(201).json("Success");
+        return res.status(201).json(newUser);
     }catch(err){
         return res.status(500).json("User already exists");
     }
 })
 
-//Handles the Clarifai API call
 app.post("/imageurl", (req, res) => {
     clarifaiApp.models.predict('f76196b43bbd45c99b4f3cd8e8b40a8a', req.body.input)
-    .then((data) => res.json(data))
+    .then(data => res.json(data)) //Oikeat tiedot löytyvät data.outputs.regions.region_info.bounding_box
     .catch(err => res.status(500).json(err));
 })
 
