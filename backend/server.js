@@ -57,12 +57,24 @@ app.post("/register", async(req, res) => {
     }
 })
 
+//Handles the Clarifai API call
 app.post("/imageurl", (req, res) => {
     clarifaiApp.models.predict('f76196b43bbd45c99b4f3cd8e8b40a8a', req.body.input)
     .then((data) => res.json(data))
     .catch(err => res.status(500).json(err));
 })
 
+
+app.put("/image", async(req, res) => {
+    const id = req.body.id;
+    try{
+        const user = await User.findByIdAndUpdate(id, {$inc: {imageCount: 1}})
+        console.log(user);
+        return res.status(202).json("Success")
+    }catch(err){
+        return res.status(500).json("Could not update the imagecount")
+    }
+})
 app.listen(port, () => {
     console.log(`App running in port ${port}`);
 });
