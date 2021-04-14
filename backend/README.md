@@ -2,6 +2,8 @@
 ## Teknologiat
 Nodejs (14.16.0), MongoDB (Mongo Atlas pilvipalvelu)
 
+Yksinkertainen ```express```illä toteutettu palvelin, joka toimii välikätenä clientin ja Clarifain välillä. Palvelimen tarkoitus on pitää huoli, että Clarifai palvelun rajapinta-avain ei paljastu.
+
 ## Rajapinnat
 ### Palvelimen rajapinnat
 | METODI | POLKU                       | KUVAUS                                   |
