@@ -1,5 +1,5 @@
-import React from "react";
-import "./ImageSearchForm.css";
+import React from 'react';
+import './ImageSearchForm.css';
 
 // imagesearch form component
 
