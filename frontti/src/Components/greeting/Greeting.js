@@ -1,40 +1,47 @@
 import React from 'react';
 import Login from '../login/login'
+import Register from '../register/register'
 import ImageSearchForm from '../ImageSearchForm/ImageSearchForm'
 import FaceDetect from '../FaceDetect/FaceDetect'
 
 const Greeting = (props) => {
     const isLoggedIn = props.isLoggedIn;
+    const userWantsToRegister = props.userWantsToRegister;
     if (!isLoggedIn) {
-        return <Login onSubmit={props.onUserLogin} />
+        if (!userWantsToRegister) {
+            return <Login onSubmit={props.onUserLogin} onLoginChange={props.onLoginChange} registerOrLogin={props.registerOrLogin} />
+        } else {
+            return <Register onSubmit={props.onUserRegister} onRegisterChange={props.onRegisterChange} registerOrLogin={props.registerOrLogin} />
+        }
     } else {
-        return (
-            <div>
+        if (props.box != {}) {
+            return (
+                <div>
+                    <ImageSearchForm
+                        onInputChange={props.onInputChange}
+                        onSubmit={props.onSubmit}
+                    />
+                    <FaceDetect box={props.box} imageUrl={props.imageUrl} />
+                </div>
+            )
+        } else {
+            return (
                 <ImageSearchForm
                     onInputChange={props.onInputChange}
                     onSubmit={props.onSubmit}
                 />
-                <FaceDetect box={props.box} imageUrl={props.imageUrl} />
-            </div>
-
-        )
+            )
+        }
     }
-    /*
     return (
         <div>
-            <form onSubmit={props.onSubmit}>
-                <div>
-                    Username: <input name="username" onChange={props.onChange} />
-                </div>
-                <div>
-                    Password: <input name="password" onChange={props.onChange} />
-                </div>
-                <div>
-                    <button input='submit'>Submit</button>
-                </div>
-            </form>
+            <ImageSearchForm
+                onInputChange={props.onInputChange}
+                onSubmit={props.onSubmit}
+            />
+            <FaceDetect box={props.box} imageUrl={props.imageUrl} />
         </div>
+
     )
-    */
 }
 export default Greeting;
