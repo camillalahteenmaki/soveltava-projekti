@@ -32,6 +32,31 @@ describe("Tests for /login route", () => {
     })
 })
 
+describe("Tests for /register route", () => {
+    const username= `test${Math.floor(Math.random()*100000)}`
+    const user = {
+        username,
+        password: "123"
+    }
+
+    test('POST /register works correctyl', async() => {
+        const res = await api.post('/register').send(user)
+        expect(res.status).toBe(201)
+        expect(res.body.username).toBe(username)
+    })
+
+    test('POST /register fails correctly', async() => {
+        const res = await api.post('/register').send({
+            username: "admin",
+            password: "password"
+        })
+        expect(res.status).toBe(500)
+        expect(res.body).toEqual("User already exists")
+    })
+
+})
+
+
 afterAll(() => {
     mongoose.connection.close()
 })
