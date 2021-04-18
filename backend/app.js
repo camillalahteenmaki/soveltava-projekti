@@ -69,8 +69,7 @@ app.post("/imageurl", (req, res) => {
 app.put("/image", async(req, res) => {
     const id = req.body.id;
     try{
-        const user = await User.findByIdAndUpdate(id, {$inc: {imageCount: 1}})
-        console.log(user);
+        await User.findByIdAndUpdate(id, {$inc: {imageCount: 1}})
         return res.status(202).json("Success")
     }catch(err){
         return res.status(500).json("Could not update the imagecount")
