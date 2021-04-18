@@ -7,9 +7,6 @@ const Clarifai = require("clarifai");
 const cors = require('cors');
 require('dotenv').config();
 
-// lisäsin tän et cami pystyy käyttää backia ku oon laiska 
-// enkä jaksanu ottaa selvää et miten tää kuuluis oikeesti 
-// hoitaa t. niklas
 app.use(cors());
 app.use(require("body-parser").urlencoded({ extended: false }));
 app.use(require("body-parser").json({limit: "50mb"}));
