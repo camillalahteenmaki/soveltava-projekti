@@ -33,15 +33,5 @@ const Greeting = (props) => {
             )
         }
     }
-    return (
-        <div>
-            <ImageSearchForm
-                onInputChange={props.onInputChange}
-                onSubmit={props.onSubmit}
-            />
-            <FaceDetect box={props.box} imageUrl={props.imageUrl} />
-        </div>
-
-    )
 }
 export default Greeting;

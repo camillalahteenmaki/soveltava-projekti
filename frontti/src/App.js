@@ -33,7 +33,7 @@ class App extends Component {
 
   calculateFaceLocation = (data) => {
     const clarifaiFace =
-      data.outputs[0].data.regions[0].region_info.bounding_box;
+      data.data.outputs[0].data.regions[0].region_info.bounding_box;
     const image = document.getElementById("inputimage");
     const width = Number(image.width);
     const height = Number(image.height);
@@ -133,7 +133,7 @@ class App extends Component {
       .then(response => {
         console.log(response)
         if (response.status === 200) {
-          this.displayFaceBox(response.data.outputs[0].data.regions[0].region_info.bounding_box)
+          this.displayFaceBox(this.calculateFaceLocation(response))
           console.log(this.state.box)
           console.log(this.state.imageUrl)
         }
