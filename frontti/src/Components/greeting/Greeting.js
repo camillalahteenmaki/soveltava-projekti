@@ -20,16 +20,24 @@ const Greeting = (props) => {
                     <ImageSearchForm
                         onInputChange={props.onInputChange}
                         onSubmit={props.onSubmit}
+                        user={props.user}
                     />
+                    <h3>Hello {props.user.username}!</h3>
+                    <h3>You have recognized {props.user.imageCount} images</h3>
                     <FaceDetect box={props.box} imageUrl={props.imageUrl} />
                 </div>
             )
         } else {
             return (
+                <div>
                 <ImageSearchForm
                     onInputChange={props.onInputChange}
                     onSubmit={props.onSubmit}
+                    user={props.user}
                 />
+                <h3>Hello {props.user.username}!</h3>
+                <h3>You have recognized {props.user.imageCount} images</h3>
+                </div>
             )
         }
     }

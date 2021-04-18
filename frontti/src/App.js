@@ -1,18 +1,7 @@
 import React, { Component } from 'react';
-import Clarifai from 'clarifai';
 import './App.css';
 import Greeting from './Components/greeting/Greeting'
-import Login from './Components/login/login';
-import ImageSearchForm from './Components/ImageSearchForm/ImageSearchForm'
-import FaceDetect from './Components/FaceDetect/FaceDetect';
 import axios from 'axios';
-import Register from './Components/register/register';
-
-let apikey = process.env.REACT_APP_APIKEY
-
-const app = new Clarifai.App({
-  apiKey: apikey
-});
 
 class App extends Component {
   constructor() {
@@ -28,6 +17,7 @@ class App extends Component {
       imageUrl: "",
       result: '',
       box: {},
+      user: {}
     };
   }
 
@@ -81,8 +71,7 @@ class App extends Component {
       if (response.status === 201) {
         this.setState({
           isLoggedIn: true,
-          loginUsername: response.data.username,
-          loginPassword: response.data.password
+          user: response.data
         })
       }
     })
@@ -113,6 +102,7 @@ class App extends Component {
     .then(response => {
       if (response.status === 200) {
         this.setState({isLoggedIn: true})
+        this.setState({user: response.data})
       }
     })
     .catch(error => {
@@ -134,8 +124,7 @@ class App extends Component {
         console.log(response)
         if (response.status === 200) {
           this.displayFaceBox(this.calculateFaceLocation(response))
-          console.log(this.state.box)
-          console.log(this.state.imageUrl)
+          this.incrementImage();
         }
       })
       .catch(error => {
@@ -143,10 +132,41 @@ class App extends Component {
       })
   }
 
+  incrementImage = () => {
+    console.log(this.state.user)
+    const body = {
+      id: this.state.user.id
+    }
+    axios.put('http://localhost:8000/image', body)
+      .then(response => {
+        if(response.status === 200){
+          const tmpUser = this.state.user;
+          console.log("USER: ", this.state.user)
+          console.log("TMPUSER: ", tmpUser);
+          tmpUser.imageCount++;
+          this.setState({user: tmpUser});
+        }
+      })
+      .catch(err => {console.log(err)})
+  }
+
   render() {
+    const {box, isLoggedIn, userWantsToRegister, result, imageUrl, user} = this.state;
     return (
       <div className="App">
-        <Greeting onLoginChange={this.onLoginChange} onSubmit={this.onSubmit} onUserLogin={this.onUserLogin} onRegisterChange={this.onRegisterChange} onUserRegister={this.onUserRegister} box={this.state.box} isLoggedIn={this.state.isLoggedIn} registerOrLogin={this.registerOrLogin} userWantsToRegister={this.state.userWantsToRegister} onInputChange={this.onInputChange} result={this.state.result} imageUrl={this.state.imageUrl} />
+        <Greeting onLoginChange={this.onLoginChange} 
+        onSubmit={this.onSubmit} 
+        onUserLogin={this.onUserLogin} 
+        onRegisterChange={this.onRegisterChange} 
+        onUserRegister={this.onUserRegister} 
+        box={box} 
+        isLoggedIn={isLoggedIn} 
+        registerOrLogin={this.registerOrLogin} 
+        userWantsToRegister={userWantsToRegister} 
+        onInputChange={this.onInputChange} 
+        result={result} 
+        imageUrl={imageUrl}
+        user={user} />
       </div>
     )
   }
