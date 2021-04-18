@@ -9,10 +9,10 @@ const Login = (props) => {
                 <div class="imgcontainer">
                     <img src={picture} alt="Avatar" class="avatar"/>
                 </div>
-                <div class="w3-large">
+                <div class="w3-container">
                     Username: <input type="text" name="loginUsername" onChange={props.onLoginChange} />
                 </div>
-                <div class="w3-large">
+                <div class="w3-container">
                     Password: <input type="password" name="loginPassword" onChange={props.onLoginChange} />
                 </div>
                 <div class="container">
