@@ -32,12 +32,8 @@ app.post("/login", async(req, res) => {
     const digest = hash.update(password).digest('hex');
     try{
         const user = await User.findOne({username: username});
-        if(user){
-            if(user.password == digest){
-                return res.status(200).json(user);
-            }
-        }
-        return res.status(400).json("Login failed");
+        return user.password === digest ? res.status(200).json(user) 
+            : res.status(400).json("Login failed");
     }catch(err){
         return res.status(500).json("Could not fetch from database");
     }
